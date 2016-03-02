@@ -84,7 +84,7 @@ Run with docker provider
 ```bash
 $ sudo apt-get -qy update
 $ sudo apt-get -qy install git
-$ git clone https://github.com/SergeyCherepanov/npm.git /tmp/lnpm-env-dev
+$ git clone https://github.com/SergeyCherepanov/npm.git /tmp/npm
 $ sudo bash /tmp/npm/install-1404.sh [--www-root /var/www] [--www-user www-data] [--www-group www-data] 
 ```
 
