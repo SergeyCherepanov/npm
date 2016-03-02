@@ -69,7 +69,7 @@ Run with docker provider
 
     $ vagrant up --provider=docker
 
-> If you want to change project hostname name, you must edit Vagrantfile and replace `NAME="lnpm"` to `NAME="youprojectname"`
+> If you want to change project hostname name, you must edit Vagrantfile and replace `NAME="npm"` to `NAME="youprojectname"`
 
 > If you want to change mysql credentials, you must edit it in Vagrantfile (by default db name, db user and db password is: lnpm)
 
@@ -84,19 +84,9 @@ Run with docker provider
 ```bash
 $ sudo apt-get -qy update
 $ sudo apt-get -qy install git
-$ git clone https://github.com/SergeyCherepanov/lnpm-env-dev.git /tmp/lnpm-env-dev
-$ sudo bash /tmp/lnpm-env-dev/install-1404.sh [--www-root /var/www] [--www-user www-data] [--www-group www-data] 
+$ git clone https://github.com/SergeyCherepanov/npm.git /tmp/lnpm-env-dev
+$ sudo bash /tmp/npm/install-1404.sh [--www-root /var/www] [--www-user www-data] [--www-group www-data] 
 ```
-
-#### Usage:
-
-For example we'll use *website.loc* hostname for project on local machine
-
-1. Add `127.0.0.1 myapp.loc www.myapp.loc` to your /etc/hosts file
-2. Put your source code to /var/www/loc/myapp, *web* (or *public*) folder will be resolved automatically by nginx
-3. Project will be available by link: http://myapp.loc or http://www.myapp.loc
-
-> note: for third level domain like dev.myapp.loc you should put code to /var/www/loc/dev.myapp folder
 
 > mysql root password is: root
 
