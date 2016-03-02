@@ -80,9 +80,6 @@ apt-get install -yq nginx
 apt-get install -yq php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
 php5-mcrypt php5-sqlite php5-xmlrpc php5-xsl php5-common php5-intl
 
-# Install xhprof
-pecl install -f xhprof
-
 # Install IonCube
 wget -O ${TMPDIR}/ioncube.tgz "http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_"$([[ "x86_64" = `arch` ]] && echo "x86-64" || echo "x86")".tar.gz"
 tar xvzf ${TMPDIR}/ioncube.tgz -C ${TMPDIR}
@@ -96,10 +93,6 @@ ln -s /etc/php5/mods-available/ioncube.ini /etc/php5/fpm/conf.d/0-ioncube.ini
 
 # Enabling mcrypt
 php5enmod mcrypt
-
-# Install graphviz
-apt-get autoremove -yq graphviz libpathplan4
-apt-get install -yq graphviz
 
 # Install Ruby + Ruby Compass + Sass
 apt-get install -yq ruby ruby-compass
@@ -120,26 +113,19 @@ if [ -d ${DIR}/conf ]; then
     cp -r ${DIR}/conf ${TMPDIR}/conf
     cd ${TMPDIR}
 else
-    wget -O /tmp/conf.zip https://github.com/SergeyCherepanov/lnpm-env-dev/archive/master.zip
+    wget -O /tmp/conf.zip https://github.com/SergeyCherepanov/npm/archive/master.zip
     unzip /tmp/conf.zip -d ${TMPDIR}
     rm /tmp/conf.zip
-    cd ${TMPDIR}/$(ls -1 ${TMPDIR}/ | grep lnpm-env-dev | head -1)
+    cd ${TMPDIR}/$(ls -1 ${TMPDIR}/ | grep npm-master | head -1)
 fi
 
 # Prepare environment configs
 # --------------------
-mv ./conf/nginx/sites-available/dev /etc/nginx/sites-available/dev
-mv ./conf/mysql/my.cnf              /etc/mysql/my.cnf
-mv ./conf/php/php.ini               /etc/php5/fpm/php.ini
-mv ./conf/php/xhprof.ini            /etc/php5/mods-available/xhprof.ini
+mv ./conf/nginx/sites-available/default /etc/nginx/sites-available/default
+mv ./conf/mysql/my.cnf                  /etc/mysql/my.cnf
+mv ./conf/php/php.ini                   /etc/php5/fpm/php.ini
 
-ln -s /etc/nginx/sites-available/dev /etc/nginx/sites-enabled/dev
-#ln -s /etc/php5/mods-available/xhprof.ini /etc/php5/fpm/conf.d/20-xhprof.ini
-
-unlink /etc/nginx/sites-enabled/default
-
-
-sed -i -e "s/\s*set\s\s*\$wwwRoot\s\s*\/var\/www\;/    set \$wwwRoot "$(echo ${WWW_ROOT} | sed -e 's/[\.\:\/&]/\\&/g')";/g" /etc/nginx/sites-available/dev
+sed -i -e "s/\s*set\s\s*\$wwwRoot\s\s*\/var\/www\;/    set \$wwwRoot "$(echo ${WWW_ROOT} | sed -e 's/[\.\:\/&]/\\&/g')";/g" /etc/nginx/sites-available/default
 sed -i -e "s/\s*user\s\s*www-data\;/user ${WWW_USER};/g"   /etc/nginx/nginx.conf
 sed -i -e "s/\s*user\s*=\s*www-data/user=${WWW_USER}/g"    /etc/php5/fpm/pool.d/www.conf
 sed -i -e "s/\s*group\s*=\s*www-data/group=${WWW_GROUP}/g" /etc/php5/fpm/pool.d/www.conf
@@ -152,41 +138,14 @@ rm /var/lib/mysql/ib_logfile1
 [[ ! -f ${WWW_ROOT}/index.php ]] && echo "<?php phpinfo();" > ${WWW_ROOT}/index.php
 
 chown ${WWW_USER}:${WWW_GROUP} ${WWW_ROOT}
-chown ${WWW_USER}:${WWW_GROUP} -R /usr/share/php/xhprof_html
-
-#cat <<EOF  > ${WWW_ROOT}/.xhprof-header.php
-#<?php
-#
-#if (extension_loaded('xhprof') && isset(\$_GET['xhprof'])) {
-#    require '/usr/share/php/xhprof_lib/utils/xhprof_lib.php';
-#    require '/usr/share/php/xhprof_lib/utils/xhprof_runs.php';
-#    xhprof_enable(XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY);
-#}
-#
-#EOF
-
-#cat <<EOF  > ${WWW_ROOT}/.xhprof-footer.php
-#<?php
-#if (isset(\$_GET['xhprof']) && extension_loaded('xhprof')) {
-#    \$profiler_namespace = 'myapp';  // namespace for your application
-#    \$xhprof_data = xhprof_disable();
-#    \$xhprof_runs = new XHProfRuns_Default();
-#    \$run_id = \$xhprof_runs->save_run(\$xhprof_data, \$profiler_namespace);
-#
-#    // url to the XHProf UI libraries (change the host name and path)
-#    \$profiler_url = sprintf('/xhprof/index.php?run=%s&amp;source=%s', \$run_id, \$profiler_namespace);
-#    echo '<a href="'. \$profiler_url .'" target="_blank">Profiler output</a>';
-#}
-#
-#EOF
 
 # Restart service
 if [[ 0 -lt `ps aux | grep upstart | grep -v grep | wc -l` ]]
 then
-service nginx restart
-service php5-fpm restart
-service mysql restart
+    service nginx restart
+    service php5-fpm restart
+    service mysql restart
 fi
 
 # Cleanup
-rm -rf $TMPDIR
+# rm -rf $TMPDIR

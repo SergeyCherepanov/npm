@@ -1,8 +1,8 @@
 Vagrant.configure(2) do |config|
-  NAME="lnpm" # !!! CHANGE IT TO YOUR PROJECT NAME !!!
-  DATABASE_NAME="lnpm" # !!! CHANGE IT TO DB NAME !!!
-  DATABASE_USER="lnpm" # !!! CHANGE IT TO DB USER NAME !!!
-  DATABASE_PASSWORD="lnpm" # !!! CHANGE IT TO DB USER PASSWORD!!!
+  NAME="npm" # !!! CHANGE IT TO YOUR PROJECT NAME !!!
+  DATABASE_NAME="npm" # !!! CHANGE IT TO DB NAME !!!
+  DATABASE_USER="npm" # !!! CHANGE IT TO DB USER NAME !!!
+  DATABASE_PASSWORD="npm" # !!! CHANGE IT TO DB USER PASSWORD!!!
 
   HOSTNAME=NAME+".loc"
 
@@ -58,13 +58,7 @@ Vagrant.configure(2) do |config|
 
     # Shared folders configuration
     if Vagrant::Util::Platform.windows?
-      if Vagrant.has_plugin?("vagrant-winnfsd")
-        override.winnfsd.uid = 1000 # vagrant UID
-        override.winnfsd.gid = 1000 # vagrant GID
-        override.vm.synced_folder "www", "/www", type: "nfs", mount_options: ['rw',  'vers=3', 'tcp', 'fsc', 'async', 'nolock', 'noacl', 'nosuid']
-      else
-        override.vm.synced_folder "www", "/www"
-      end
+      override.vm.synced_folder "www", "/www"
     else
       override.nfs.map_uid = Process.uid
       override.nfs.map_gid = Process.gid
@@ -77,12 +71,6 @@ Vagrant.configure(2) do |config|
 
     # Install environment
     override.vm.provision :shell, :path => "install-1404.sh", :args => ["--www-root", "/www", "--www-user", "vagrant", "--www-group", "vagrant"]
-
-    # Configure default database credentials
-    override.vm.provision :shell, :path => "default/db.sh", :args => [DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD]
-
-    # Finish
-    override.vm.provision :shell, :path => "default/completion.sh", :args => [HOSTNAME, DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD]
   end
 
   # Docker provider
@@ -97,11 +85,5 @@ Vagrant.configure(2) do |config|
 
     # Install environment
     override.vm.provision :shell, :path => "install-1404.sh", :args => ["--www-root", "/www", "--www-user", "vagrant", "--www-group", "vagrant"]
-
-    # Configure default database credentials
-    override.vm.provision :shell, :path => "default/db.sh", :args => [DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD]
-
-    # Finish
-    override.vm.provision :shell, :path => "default/completion.sh", :args => [HOSTNAME, DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD]
   end
 end
