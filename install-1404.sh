@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 DIR=$(dirname $(readlink -f $0))
-TMPDIR=/tmp/lnpm-env-dev
+TMPDIR=/tmp/npm
 
 export DEBIAN_FRONTEND=noninteractive
 export LC_ALL=en_US.UTF-8
@@ -51,9 +51,6 @@ mkdir -p ${TMPDIR}
 
 # Nginx repo
 add-apt-repository -y ppa:nginx/stable
-
-# Graphviz repo
-apt-add-repository -y ppa:dperry/ppa-graphviz-test
 
 # Node.js repo
 add-apt-repository ppa:chris-lea/node.js
