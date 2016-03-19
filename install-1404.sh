@@ -72,7 +72,7 @@ apt-get -y upgrade
 apt-get -q -y install percona-server-server-5.5 percona-server-client-5.5
 
 # Install tools
-apt-get install -yq unzip git-core curl wget htop mc mtr-tiny
+apt-get install -yq unzip git-core curl wget htop screen mc mtr-tiny apache2-utils
 
 # Install nginx
 apt-get install -yq nginx
@@ -80,6 +80,10 @@ apt-get install -yq nginx
 # Install php
 apt-get install -yq php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
 php5-mcrypt php5-sqlite php5-xmlrpc php5-xsl php5-common php5-intl
+
+# Install mail tools
+apt-get install opendkim opendkim-tools
+
 
 # Install IonCube
 wget -O ${TMPDIR}/ioncube.tgz "http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_"$([[ "x86_64" = `arch` ]] && echo "x86-64" || echo "x86")".tar.gz"
@@ -96,7 +100,10 @@ ln -s /etc/php5/mods-available/ioncube.ini /etc/php5/fpm/conf.d/0-ioncube.ini
 php5enmod mcrypt
 
 # Install Ruby + Ruby Compass + Sass
-apt-get install -yq ruby ruby-compass
+apt-get install -yq ruby ruby-dev
+
+# Install Ruby Compass + Sass
+gem install compass
 
 # Install Node.js
 apt-get install -yq nodejs
@@ -138,7 +145,12 @@ rm /var/lib/mysql/ib_logfile1
 [[ ! -d ${WWW_ROOT} ]] && mkdir -p ${WWW_ROOT}
 [[ ! -f ${WWW_ROOT}/index.php ]] && echo "<?php phpinfo();" > ${WWW_ROOT}/index.php
 
-chown ${WWW_USER}:${WWW_GROUP} ${WWW_ROOT}
+HTPASSWORD=`dd if=/dev/urandom bs=128 count=1 2>/dev/null | LC_ALL=C tr -dc 'a-z0-9' | fold -w 16 | head -n 1 | awk '{print tolower($0)}'`
+
+chown -R ${WWW_USER}:${WWW_GROUP} ${WWW_ROOT}
+
+echo "${WWW_USER}:${HTPASSWORD}" > /etc/nginx/.htpasswd-plain
+tpasswd -bc /etc/nginx/.htpasswd ${WWW_USER} ${HTPASSWORD}
 
 # Restart service
 if [[ 0 -lt `ps aux | grep upstart | grep -v grep | wc -l` ]]
