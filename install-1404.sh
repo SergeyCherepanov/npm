@@ -150,7 +150,7 @@ HTPASSWORD=`dd if=/dev/urandom bs=128 count=1 2>/dev/null | LC_ALL=C tr -dc 'a-z
 chown -R ${WWW_USER}:${WWW_GROUP} ${WWW_ROOT}
 
 echo "${WWW_USER}:${HTPASSWORD}" > /etc/nginx/.htpasswd-plain
-tpasswd -bc /etc/nginx/.htpasswd ${WWW_USER} ${HTPASSWORD}
+htpasswd -bc /etc/nginx/.htpasswd ${WWW_USER} ${HTPASSWORD}
 
 # Restart service
 if [[ 0 -lt `ps aux | grep upstart | grep -v grep | wc -l` ]]
