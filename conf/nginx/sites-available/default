@@ -32,6 +32,9 @@ server {
     location ~ /\.ht {
         deny  all;
     }
+    location ~ /\.git {
+        deny  all;
+    }
 
     # Set static files cache lifetime
     location ~* ^.+\.(jpg|jpeg|gif|png|ico|css|pdf|ppt|txt|bmp|rtf|js)$ {
