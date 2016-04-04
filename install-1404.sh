@@ -82,7 +82,7 @@ apt-get install -yq php5-fpm php5-cli php5-dev php5-mysql php5-curl php5-gd \
 php5-mcrypt php5-sqlite php5-xmlrpc php5-xsl php5-common php5-intl
 
 # Install mail tools
-apt-get install opendkim opendkim-tools
+apt-get install -yq opendkim opendkim-tools
 
 
 # Install IonCube
