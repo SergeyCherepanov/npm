@@ -130,13 +130,20 @@ fi
 # Prepare environment configs
 # --------------------
 mv ./conf/nginx/sites-available/default /etc/nginx/sites-available/default
+mv ./conf/nginx/status.inc              /etc/nginx/status.inc
 mv ./conf/mysql/my.cnf                  /etc/mysql/my.cnf
 mv ./conf/php/php.ini                   /etc/php5/fpm/php.ini
 
 sed -i -e "s/\s*set\s\s*\$wwwRoot\s\s*\/var\/www\;/    set \$wwwRoot "$(echo ${WWW_ROOT} | sed -e 's/[\.\:\/&]/\\&/g')";/g" /etc/nginx/sites-available/default
-sed -i -e "s/\s*user\s\s*www-data\;/user ${WWW_USER};/g"   /etc/nginx/nginx.conf
-sed -i -e "s/\s*user\s*=\s*www-data/user=${WWW_USER}/g"    /etc/php5/fpm/pool.d/www.conf
-sed -i -e "s/\s*group\s*=\s*www-data/group=${WWW_GROUP}/g" /etc/php5/fpm/pool.d/www.conf
+sed -i -e "s/\s*user\s\s*.*\;/user ${WWW_USER};/g"                  /etc/nginx/nginx.conf
+sed -i -e "s/\s*user\s*=\s*.*/user=${WWW_USER}/g"                   /etc/php5/fpm/pool.d/www.conf
+sed -i -e "s/\s*group\s*=\s*.*/group=${WWW_GROUP}/g"                /etc/php5/fpm/pool.d/www.conf
+sed -i -e "s/\s*listen.owner\s*=.*/listen.owner = ${WWW_USER}/g"    /etc/php5/fpm/pool.d/www.conf
+sed -i -e "s/\s*listen.group\s*=.*/listen.group = ${WWW_GROUP}/g"   /etc/php5/fpm/pool.d/www.conf
+sed -i -e "s/.*pm.status_path\s*=.*/pm.status_path = /fpm_status/g" /etc/php5/fpm/pool.d/www.conf
+sed -i -e "s/.*ping.path\s*=.*/ping.path = /fpm_ping/g"             /etc/php5/fpm/pool.d/www.conf
+
+pm.status_path = /dd_fpm_status
 
 rm /var/lib/mysql/ibdata1
 rm /var/lib/mysql/ib_logfile0

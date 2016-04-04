@@ -1,7 +1,6 @@
 server {
     listen               80 default_server;
     port_in_redirect     off;
-    server_name          $host;
 
     keepalive_timeout    2;
     client_max_body_size 256m;
@@ -14,6 +13,8 @@ server {
     gzip_proxied any;
     gzip_types text/plain text/xml text/css application/javascript application/json;
     gzip_vary on;
+
+    # include /etc/nginx/status.inc;
 
     index index.html index.php;
     try_files $uri $uri/ @rewrite;

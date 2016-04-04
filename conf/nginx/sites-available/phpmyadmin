@@ -1,7 +1,6 @@
 server {
     listen               8080 default_server;
     port_in_redirect     off;
-    server_name          $host;
 
     auth_basic "Restricted";
     auth_basic_user_file /etc/nginx/.htpasswd;
