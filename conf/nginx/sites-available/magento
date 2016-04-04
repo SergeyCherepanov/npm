@@ -1,5 +1,5 @@
 server {
-    listen               80 default_server;
+    listen               80;
     port_in_redirect     off;
     server_name          $host;
 
@@ -22,9 +22,20 @@ server {
         rewrite / /index.php/$1;
     }
 
+    # Deny protected files and folders
+    location ~ ^(/app/|/media/downloadable/|/var/|/shell/|/pkginfo/|/media/customer/|/lib/|/includes/) {
+        rewrite ^ /index.php last;
+    }
+    
+    # Protected admin area
+    location /admin {
+        auth_basic "Restricted";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+    }
+
     # deny access to .* hidden files
     location ~ /\. {
-        deny all;
+        deny  all;
     }
     
     # Set static files cache lifetime
