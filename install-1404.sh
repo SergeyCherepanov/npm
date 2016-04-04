@@ -129,7 +129,7 @@ fi
 
 # Prepare environment configs
 # --------------------
-mv ./conf/nginx/sites-available/default /etc/nginx/sites-available/default
+mv ./conf/nginx/sites-available/*       /etc/nginx/sites-available/
 mv ./conf/nginx/status.inc              /etc/nginx/status.inc
 mv ./conf/mysql/my.cnf                  /etc/mysql/my.cnf
 mv ./conf/php/php.ini                   /etc/php5/fpm/php.ini
