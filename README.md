@@ -9,7 +9,7 @@ Vagrant Development Environment for Symfony, Laravel, Magento
 ## What will be installed
 
 * nginx v.1.8
-* php v.5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl, ioncube, xhprof
+* php v.5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl, ioncube
 * composer
 * percona-server 
 * node.js, ruby, scss, less, compass
