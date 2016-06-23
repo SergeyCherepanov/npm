@@ -34,7 +34,7 @@ done
 [[ -z ${WWW_USER}  ]] && WWW_USER="www-data"
 [[ -z ${WWW_GROUP} ]] && WWW_GROUP="www-data"
 
-DEBCONF_PREFIX="percona-server-server-5.5 percona-server-server"
+DEBCONF_PREFIX="percona-server-server-5.5 percona-server-server mariadb-server-5.5 mariadb-server"
 PERCONA_PW="root"
 echo "${DEBCONF_PREFIX}/root_password password $PERCONA_PW" | sudo debconf-set-selections
 echo "${DEBCONF_PREFIX}/root_password_again password $PERCONA_PW" | sudo debconf-set-selections
@@ -59,18 +59,23 @@ add-apt-repository -y ppa:nginx/stable
 # Node.js repo
 add-apt-repository ppa:chris-lea/node.js
 
-# Percona repo
-apt-key adv --keyserver keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
-echo "deb http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee /etc/apt/sources.list.d/percona.list
-echo "deb-src http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee -a /etc/apt/sources.list.d/percona.list
-
+# Add percona repo if available
+if [[ ! "armv7l" -eq `arch` ]]; then
+    apt-key adv --keyserver keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
+    echo "deb http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee /etc/apt/sources.list.d/percona.list
+    echo "deb-src http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee -a /etc/apt/sources.list.d/percona.list
+fi
 # Update
 apt-get update
 apt-get -y upgrade
 
-# Install Percona-Server
-apt-get -q -y install percona-server-server-5.5 percona-server-client-5.5
-
+if [[ ! "armv7l" -eq `arch` ]]; then
+    # Install Percona-Server
+    apt-get -q -y install percona-server-server-5.5 percona-server-client-5.5
+else 
+    # Install MariaDB-Server
+    apt-get -q -y install mariadb-server-5.5 mariadb-client-5.5
+fi
 # Install tools
 apt-get install -yq unzip git-core curl wget htop screen mc mtr-tiny apache2-utils
 
@@ -86,7 +91,7 @@ apt-get install -yq opendkim opendkim-tools
 
 
 # Install IonCube
-wget -O ${TMPDIR}/ioncube.tgz "http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_"$([[ "x86_64" = `arch` ]] && echo "x86-64" || echo "x86")".tar.gz"
+wget -O ${TMPDIR}/ioncube.tgz "http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_"$([[ "x86_64" = `arch` ]] && echo "x86-64" || [[ "armv7l" = `arch` ]] && echo "armv7l" || echo "x86")".tar.gz"
 tar xvzf ${TMPDIR}/ioncube.tgz -C ${TMPDIR}
 PHP_VERSION=$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")
 PHP_EXTDIR=$(php -i | grep "^extension_dir" | awk '{print $3}')
