@@ -8,11 +8,10 @@ Php + Mysql Environment for Symfony, Laravel, Magento, etc
 
 ## What will be installed
 
-* nginx v.1.8
-* php v.5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl, ioncube
-* composer
-* percona-server 
-* node.js, ruby, scss, less, compass
+* Nginx v.1.8 or higger
+* PHP v.5.5 with intl, mcrypt, pdo, curl, gd, sqlite, xmlrpc, xsl, ioncube
+* MySQL: PerconaServer or MariaDB if ARM architecture used
+* Other: composer, node.js, ruby, scss, less, compass
 
 ## Vagrant Installation
 
