@@ -1,4 +1,4 @@
-Vagrant Development Environment for Symfony, Laravel, Magento
+Php + Mysql Environment for Symfony, Laravel, Magento, etc
 ==============================================================
 
 ## Supported providers:
