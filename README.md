@@ -5,6 +5,7 @@ Php + Mysql Environment for Symfony, Laravel, Magento, etc
 
 * VirtualBox
 * Docker
+* Native
 
 ## What will be installed
 
