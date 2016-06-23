@@ -1,11 +1,10 @@
 Php + Mysql Environment for Symfony, Laravel, Magento, etc
 ==============================================================
 
-## Supported providers:
+## Supported Vagrant providers:
 
 * VirtualBox
 * Docker
-* Native
 
 ## What will be installed
 
