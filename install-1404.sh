@@ -34,10 +34,15 @@ done
 [[ -z ${WWW_USER}  ]] && WWW_USER="www-data"
 [[ -z ${WWW_GROUP} ]] && WWW_GROUP="www-data"
 
-DEBCONF_PREFIX="percona-server-server-5.5 percona-server-server mariadb-server-5.5 mariadb-server"
-PERCONA_PW="root"
-echo "${DEBCONF_PREFIX}/root_password password $PERCONA_PW" | sudo debconf-set-selections
-echo "${DEBCONF_PREFIX}/root_password_again password $PERCONA_PW" | sudo debconf-set-selections
+if [[ ! "armv7l" -eq `arch` ]]; then
+    DEBCONF_PREFIX="percona-server-server-5.5 percona-server-server mariadb-server-5.5 mariadb-server"
+else
+    DEBCONF_PREFIX="mariadb-server-5.5 mariadb-server"
+fi
+MYSQL_PW="root"
+
+echo "${DEBCONF_PREFIX}/root_password password $MYSQL_PW" | sudo debconf-set-selections
+echo "${DEBCONF_PREFIX}/root_password_again password $MYSQL_PW" | sudo debconf-set-selections
 
 locale-gen en_US.UTF-8
 dpkg-reconfigure locales 
