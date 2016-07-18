@@ -23,9 +23,10 @@ Install Vagrant plugins:
 
     $ vagrant plugin install vagrant-hostmanager
 
+<!--- 
 Optional (windows host only): install nfs plugin
-
-    $ vagrant plugin install vagrant-winnfsd
+$ vagrant plugin install vagrant-winnfsd
+-->
 
 **Linux Only (Ubuntu):**
 
