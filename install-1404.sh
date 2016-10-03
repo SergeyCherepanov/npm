@@ -41,8 +41,8 @@ else
 fi
 MYSQL_PW="root"
 
-echo "${DEBCONF_PREFIX}/root_password password $MYSQL_PW" | sudo debconf-set-selections
-echo "${DEBCONF_PREFIX}/root_password_again password $MYSQL_PW" | sudo debconf-set-selections
+echo "${DEBCONF_PREFIX}/root_password password $MYSQL_PW" | debconf-set-selections
+echo "${DEBCONF_PREFIX}/root_password_again password $MYSQL_PW" | debconf-set-selections
 
 locale-gen en_US.UTF-8
 dpkg-reconfigure locales 
