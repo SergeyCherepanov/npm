@@ -153,8 +153,6 @@ sed -i -e "s/\s*listen.group\s*=.*/listen.group = ${WWW_GROUP}/g"   /etc/php5/fp
 sed -i -e "s/.*pm.status_path\s*=.*/pm.status_path = /fpm_status/g" /etc/php5/fpm/pool.d/www.conf
 sed -i -e "s/.*ping.path\s*=.*/ping.path = /fpm_ping/g"             /etc/php5/fpm/pool.d/www.conf
 
-pm.status_path = /dd_fpm_status
-
 rm /var/lib/mysql/ibdata1
 rm /var/lib/mysql/ib_logfile0
 rm /var/lib/mysql/ib_logfile1
