@@ -34,7 +34,7 @@ done
 [[ -z ${WWW_USER}  ]] && WWW_USER="www-data"
 [[ -z ${WWW_GROUP} ]] && WWW_GROUP="www-data"
 
-if [[ ! "armv7l" -eq `arch` ]]; then
+if [[ ! "armv7l" = `arch` ]]; then
     DEBCONF_PREFIX="percona-server-server-5.5 percona-server-server mariadb-server-5.5 mariadb-server"
 else
     DEBCONF_PREFIX="mariadb-server-5.5 mariadb-server"
@@ -65,7 +65,7 @@ add-apt-repository -y ppa:nginx/stable
 add-apt-repository ppa:chris-lea/node.js
 
 # Add percona repo if available
-if [[ ! "armv7l" -eq `arch` ]]; then
+if [[ ! "armv7l" = `arch` ]]; then
     apt-key adv --keyserver keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
     echo "deb http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee /etc/apt/sources.list.d/percona.list
     echo "deb-src http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee -a /etc/apt/sources.list.d/percona.list
@@ -74,7 +74,7 @@ fi
 apt-get update
 apt-get -y upgrade
 
-if [[ ! "armv7l" -eq `arch` ]]; then
+if [[ ! "armv7l" = `arch` ]]; then
     # Install Percona-Server
     apt-get -q -y install percona-server-server-5.5 percona-server-client-5.5
 else 
