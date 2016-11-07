@@ -66,9 +66,11 @@ add-apt-repository ppa:chris-lea/node.js
 
 # Add percona repo if available
 if [[ ! "armv7l" = `arch` ]]; then
-    apt-key adv --keyserver keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
-    echo "deb http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee /etc/apt/sources.list.d/percona.list
-    echo "deb-src http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee -a /etc/apt/sources.list.d/percona.list
+    #apt-key adv --keyserver keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
+    #echo "deb http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee /etc/apt/sources.list.d/percona.list
+    #echo "deb-src http://repo.percona.com/apt "$(lsb_release -sc)" main" | tee -a /etc/apt/sources.list.d/percona.list
+    wget https://repo.percona.com/apt/percona-release_0.1-4.$(lsb_release -sc)_all.deb
+    dpkg -i percona-release_0.1-4.$(lsb_release -sc)_all.deb
 fi
 # Update
 apt-get update
