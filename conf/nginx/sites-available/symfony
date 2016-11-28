@@ -1,5 +1,5 @@
 server {
-    listen               80;
+    listen               80 default_server;
     port_in_redirect     off;
 
     keepalive_timeout    2;
